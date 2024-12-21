@@ -1,9 +1,105 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Personal Finance</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
-</html>
+{% extends "base.html" %} {% block content %}
+<div id="cash-info">
+  <h2>Cash Info</h2>
+  <table class="table table-bordered">
+    <tr>
+      <td>TWD Total: NTD{{ data.twd }}</td>
+      <td>USD Total: USD{{ data.us }}</td>
+      <td>
+        Today's Exchange Rate (Global exchange rate API:
+        https://tw.rter.info/howto_currencyapi.php)
+      </td>
+      <td>Total Cash: NTD{{ data.total }}</td>
+    </tr>
+  </table>
+
+  <h4>Cash record</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">TWD</th>
+        <th scope="col">USD</th>
+        <th scope="col">Note</th>
+        <th scope="col">Date</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data['cash_result'] %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+        <td>
+          <form action="cash-delete" method="post">
+            <input type="hidden" name="id" value="{{ row[0] }}" />
+            <button type="submit" class="btn btn-warning">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="stock-info">
+  <h2>Stock Info</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">股票代號</th>
+        <th scope="col">持有股數</th>
+        <th scope="col">目前股價</th>
+        <th scope="col">目前市值</th>
+        <th scope="col">股票資產佔比 (%)</th>
+        <th scope="col">平均購買成本(包含手續費)</th>
+        <th scope="col">平均成本</th>
+        <th scope="col">報酬率 (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stock in data['stock_info'] %}
+      <tr>
+        <td>{{ stock['stock_id'] }}</td>
+        <td>{{ stock['shares'] }}</td>
+        <td>{{ stock['current_price'] }}</td>
+        <td>{{ stock['total_value'] }}</td>
+        <td>{{ stock['value_percentage'] }}</td>
+        <td>{{ stock['average_cost'] }}</td>
+        <td>{{ stock['average_cost'] }}</td>
+        <td>{{ stock['rate_of_return'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div
+  id="chart"
+  style="display: flex; flex-wrap: wrap; justify-content: space-between"
+>
+  {% if data['show_stock_pie_chart'] %}
+  <figure style="flex: 0 1 500px; margin: 10px">
+    <figcaption>股票庫存佔比圖</figcaption>
+    <img
+      style="width: 100%; height: auto"
+      src="{{ url_for('static', filename='stock_pie_chart.png') }}"
+      alt="Pie Chart"
+    />
+  </figure>
+  {% endif %} {% if data['show_total_pie_chart'] %}
+  <figure style="flex: 0 1 500px; margin: 10px">
+    <figcaption>資產比例佔比圖</figcaption>
+    <img
+      style="width: 100%; height: auto"
+      src="{{ url_for('static', filename='total_pie_chart.png') }}"
+      alt="Pie Chart"
+    />
+  </figure>
+  {% endif %}
+</div>
+
+{% endblock %}

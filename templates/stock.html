@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block content %}
+
+<form action="http://127.0.0.1:5000/stock" method="post">
+  <div class="mb-3">
+    <label for="stock-id" class="form-label">Stock number</label>
+    <input type="number" class="form-control" id="stock-id" name="stock-id" />
+  </div>
+
+  <div class="mb-3">
+    <label for="stock-num" class="form-label">Number of Shares</label>
+    <input type="number" class="form-control" id="stock-num" name="stock-num" />
+  </div>
+
+  <div class="mb-3">
+    <label for="stock-price" class="form-label">Price</label>
+    <input
+      type="number"
+      class="form-control"
+      id="stock-price"
+      name="stock-price"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="processing-fee" class="form-label">Processing Fee</label>
+    <input
+      type="number"
+      class="form-control"
+      id="processing-fee"
+      name="processing-fee"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="tax" class="form-label">Tax</label>
+    <input type="number" class="form-control" id="tax" name="tax" />
+  </div>
+
+  <div class="mb-3">
+    <label for="note" class="form-label">Note</label>
+    <input type="text" class="form-control" id="note" name="note" />
+  </div>
+
+  <div class="mb-3">
+    <label for="date" class="form-label">Date</label>
+    <input type="date" class="form-control" id="date" name="date" />
+  </div>
+  <form action="stock" method="post">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</form>
+
+{% endblock %}
